@@ -116,3 +116,43 @@ SMatrix* MTRS(SMatrix* pM)
             pRM->pValues[r][c] = pM->pValues[c][r];
     return pRM;
 }
+
+int MDet(SMatrix* pM)
+{
+    if (pM->nR != pM->nC) { printf("Not a valid determinant.\n"); return -1; }
+    else if (pM->nR == 2)
+        return (pM->pValues[0][0] * pM->pValues[1][1] - pM->pValues[0][1] * pM->pValues[1][0]);
+
+    int determinant = 0;
+    SMatrix* Recurr = CreateMatrix(pM->nR, pM->nC, MFT_ZEROS);
+
+    if (pM->nR > 2)
+    {
+        for (int i = 0; i < pM->nC; i++)
+        {
+            for (int j = 0; j < pM->nR - 1; j++)
+            {
+                char flag = 0;
+                for (int k = 0; k < pM->nC; k++)
+                {
+                    if (k == i)
+                    {
+                        k++;
+                        flag = 1;
+                    }
+                    if (flag == 0)
+                        Recurr->pValues[j][k] = pM->pValues[j+1][k];
+                    else
+                        Recurr->pValues[j][k-1] = pM->pValues[j+1][k];
+
+                }
+            }
+            if (i % 2 == 1)
+                determinant -= pM->pValues[0][i]*MDet(Recurr);
+            else
+                determinant += pM->pValues[0][i]*MDet(Recurr);
+        }
+    }
+    free(Recurr);
+    return determinant;
+}

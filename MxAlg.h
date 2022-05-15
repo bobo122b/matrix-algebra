@@ -19,6 +19,7 @@ SMatrix* MADD(SMatrix* pM1, SMatrix* pM2);
 SMatrix* MSUB(SMatrix* pM1, SMatrix* pM2);
 SMatrix* MMUL(SMatrix* pM1, SMatrix* pM2);
 SMatrix* MTRS(SMatrix* pM);
+int MDET(SMatrix* pM);
 
 
 #endif // MXALG_H
